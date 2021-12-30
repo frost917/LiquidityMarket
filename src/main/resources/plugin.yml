@@ -1,0 +1,4 @@
+name: LiquidityMarket
+version: '${version}'
+main: com.frost917.mcserver.market.Main
+api-version: 1.18
