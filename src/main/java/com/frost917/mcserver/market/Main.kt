@@ -1,7 +1,6 @@
 package com.frost917.mcserver.market
 
 import org.bukkit.plugin.java.JavaPlugin
-import kotlin.math.log
 
 class Main : JavaPlugin() {
     override fun onEnable() {
@@ -10,6 +9,12 @@ class Main : JavaPlugin() {
 
     override fun onDisable() {
         // Plugin shutdown logic
+    }
+
+    object MainPlugin {
+        fun getPlugin(): JavaPlugin {
+            return getPlugin()
+        }
     }
 
 
