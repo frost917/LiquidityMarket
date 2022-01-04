@@ -1,7 +1,13 @@
 package com.frost917.mcserver.market.storage
 
 enum class StorageType {
-    REMOTE,
+    MYSQL,
+    MARIADB,
+    POSTGRES,
+
+    SQLITE,
+    H2,
+
     JSON,
     YAML
 }

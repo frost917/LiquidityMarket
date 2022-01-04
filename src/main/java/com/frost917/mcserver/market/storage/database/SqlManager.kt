@@ -7,20 +7,10 @@ import org.jetbrains.exposed.sql.*
 
 import com.frost917.mcserver.market.storage.ItemData
 import com.frost917.mcserver.market.storage.StorageManager
-import com.frost917.mcserver.market.storage.database.connection.DatabaseType
 import org.bukkit.Material
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class SqlManager : StorageManager {
-    private val database: Database
-
-    init {
-        val plugin = Main.MainPlugin.getPlugin()
-        val config = plugin.config
-        val databaseType = DatabaseType.valueOf(config.getString("db_type")!!)
-        database = DatabaseConnectionFacotory.getConnection(databaseType)
-    }
-
+class SqlManager(private val database: Database) : StorageManager {
     object ItemDataQuery: Table() {
         val material: Column<String> = varchar("material", 30)
         val marketValue: Column<Long> = long("market_value")
