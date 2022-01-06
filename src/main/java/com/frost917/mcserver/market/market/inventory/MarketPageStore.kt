@@ -4,7 +4,7 @@ import org.bukkit.entity.Player
 import java.util.*
 
 object MarketPageStore {
-    var pageMap = mutableMapOf<UUID, Int>()
+    private var pageMap = mutableMapOf<UUID, Int>()
 
     fun syncMarketPage(player: Player, page: Int) {
         val UUID = player.playerProfile.id

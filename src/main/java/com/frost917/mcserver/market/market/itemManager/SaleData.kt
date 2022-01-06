@@ -6,7 +6,7 @@ import org.bukkit.Material
 data class SaleData(val material: Material, val nowValue: Int, val stackValue: Int) {
     fun toLore(): List<Component> {
         val lore = mutableListOf<Component>()
-        lore.add(Component.text(("개당 가격: $nowValue")))
+        lore.add(Component.text(("개당 가격: $nowValue\n")))
 
         val stackQuantity = stackValue / nowValue
 

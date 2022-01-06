@@ -1,4 +1,16 @@
 name: LiquidityMarket
-version: '${version}'
+version: '0.0.1'
 main: com.frost917.mcserver.market.Main
 api-version: 1.18
+author: frost917
+permissions:
+  market.*:
+
+commands:
+  market:
+    permission: market.open
+    usage: "/<command> [open|info]
+    open: 상점 열기
+    info: 도움말 및 현재 가격 확인"
+  marketadmin:
+    permission: market.admin
