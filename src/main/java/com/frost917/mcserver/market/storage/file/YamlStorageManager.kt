@@ -1,6 +1,6 @@
 package com.frost917.mcserver.market.storage.file
 
-import com.frost917.mcserver.market.storage.ItemData
+import com.frost917.mcserver.market.ItemData
 import com.frost917.mcserver.market.storage.StorageManager
 import org.bukkit.Material
 

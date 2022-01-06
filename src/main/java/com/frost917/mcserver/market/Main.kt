@@ -11,6 +11,8 @@ class Main : JavaPlugin() {
         // Plugin shutdown logic
     }
 
+
+
     object MainPlugin {
         fun getPlugin(): JavaPlugin {
             return getPlugin()

@@ -1,11 +1,10 @@
 package com.frost917.mcserver.market.storage.database
 
-import com.frost917.mcserver.market.Main
 import org.jetbrains.exposed.sql.*
 // import org.jetbrains.exposed.dao.*
 
 
-import com.frost917.mcserver.market.storage.ItemData
+import com.frost917.mcserver.market.ItemData
 import com.frost917.mcserver.market.storage.StorageManager
 import org.bukkit.Material
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -65,9 +64,11 @@ class SqlManager(private val database: Database) : StorageManager {
         return itemData
     }
 
+    // marketValue 변동에 대비해 totalQuantity 및 marketValue를 변경함
     override fun syncItemData(itemData: ItemData): Boolean {
         transaction(database) {
             ItemDataQuery.update({ ItemDataQuery.material eq itemData.material.toString() }) {
+                it[marketValue] = itemData.marketValue
                 it[totalQuantity] = itemData.totalQuantity
             }
         }

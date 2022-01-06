@@ -1,4 +1,4 @@
-package com.frost917.mcserver.market.storage
+package com.frost917.mcserver.market
 
 import org.bukkit.Material
 

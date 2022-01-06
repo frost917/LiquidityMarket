@@ -1,7 +1,7 @@
 package com.frost917.mcserver.market.storage
 
+import com.frost917.mcserver.market.ItemData
 import org.bukkit.Material
-import org.bukkit.plugin.java.JavaPlugin
 
 interface StorageManager {
     // Create
