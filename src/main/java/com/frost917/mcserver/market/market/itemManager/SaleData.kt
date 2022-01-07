@@ -13,5 +13,9 @@ data class SaleData(val material: Material, val nowValue: Int, val stackValue: I
         lore.add(Component.text(("$stackQuantity 가격: $stackValue")))
         return lore
     }
+
+    fun getStackQuantity(): Int {
+        return stackValue / nowValue
+    }
 }
 
