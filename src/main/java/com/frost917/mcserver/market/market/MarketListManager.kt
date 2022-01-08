@@ -1,4 +1,4 @@
-package com.frost917.mcserver.market.market.inventory
+package com.frost917.mcserver.market.market
 
 import com.frost917.mcserver.market.ItemData
 import com.frost917.mcserver.market.market.itemManager.ItemValueManager

@@ -6,6 +6,7 @@ import com.frost917.mcserver.market.market.inventory.MarketPageStore
 import com.frost917.mcserver.market.market.itemManager.ItemValueManager
 import com.frost917.mcserver.market.storage.StorageManager
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.HandlerList
@@ -18,12 +19,13 @@ import org.bukkit.inventory.ItemStack
 class MarketTrade(
     private val storage: StorageManager
 ): Listener{
+    private val plugin = Main.MainPlugin.getPlugin()
 
     // 이론상 상점 창이 열려있을 때에만 작동
     @EventHandler
     fun marketItemClick(event: InventoryClickEvent) {
         // 디버그용 코드
-        Main.MainPlugin.getPlugin().logger.info("LQMarket: Item Clicked!")
+        plugin.logger.info("LQMarket: Item Clicked!")
 
         // 플레이어 인벤토리 클릭시 무시
         if (event.inventory.type == InventoryType.PLAYER) {
@@ -38,12 +40,18 @@ class MarketTrade(
         }
 
         val playerInventory = event.whoClicked.inventory
-        // 플레이어의 아이템 칸이 꽉 차있으면 무시
+        // 플레이어의 아이템 칸이 꽉 차있으면 경고
         if (playerInventory.first(item) != -1 ||playerInventory.firstEmpty() == -1) {
             event.whoClicked.sendMessage("경고. 인벤토리가 가득 찼습니다.\n타인이 아이템을 먹을 수도 있습니다.")
         }
 
         val itemData = storage.getMarketData(item)
+
+        // AIR를 반환하는 경우 해당 아이템은 오류
+        if(itemData.material == Material.AIR) {
+            return
+        }
+
         val saleData = ItemValueManager.calcItemValue(itemData)
         var result: ItemData
         var tradeQuantity = 0
@@ -119,6 +127,6 @@ class MarketTrade(
     @EventHandler
     fun closeMarketInventory(event: InventoryCloseEvent) {
         HandlerList.unregisterAll(this)
-        MarketPageStore.syncMarketPage(event.player as Player, 0)
+        MarketPageStore.closeMarketPage(event.player as Player)
     }
 }

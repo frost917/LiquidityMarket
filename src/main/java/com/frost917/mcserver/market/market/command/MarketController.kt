@@ -1,10 +1,10 @@
 package com.frost917.mcserver.market.market.command
 
-import com.frost917.mcserver.market.ItemData
 import com.frost917.mcserver.market.Main
+import com.frost917.mcserver.market.market.MarketType
 import com.frost917.mcserver.market.market.event.MarketTrade
-import com.frost917.mcserver.market.market.inventory.MarketInventoryManager
-import com.frost917.mcserver.market.market.inventory.MarketListManager
+import com.frost917.mcserver.market.market.inventory.MarketInventory
+import com.frost917.mcserver.market.market.MarketListManager
 import com.frost917.mcserver.market.market.inventory.MarketPageStore
 import com.frost917.mcserver.market.market.itemManager.ItemValueManager
 import com.frost917.mcserver.market.storage.StorageManagerFactory
@@ -66,24 +66,7 @@ class MarketController(
                     return false
                 }
 
-                val itemList = storage.getMarketData()
-
-                // 거래소 페이지는 0으로 초기화
-                MarketPageStore.syncMarketPage(sender, 0)
-
-                val splitItemList = MarketListManager.splitMarketList(
-                    itemList,
-                    MarketPageStore.getMarketPage(
-                        sender
-                    )
-                )
-                val marketInventory = MarketInventoryManager.drawMarketInventory(
-                    MarketListManager.convertItemToSale(
-                        splitItemList
-                    )
-                )
-                // 플레이어에게 인벤토리 창 보여주게 해야됨
-                sender.openInventory(marketInventory)
+                MarketPageStore.openNewMarket(sender)
 
                 // 아이템 클릭 이벤트 처리용 이벤트 레지스터
                 val plugin = Main.MainPlugin.getPlugin()
@@ -93,7 +76,7 @@ class MarketController(
             // info의 경우 도움말 혹은 특정 아이템의 시세 불러옴
             else if (args[0] == "info") {
                 if (args.count() < 2) {
-                    sender.chat("/market open으로 상점 페이지를 열 수 있습니다." +
+                    sender.sendMessage("/market open으로 상점 페이지를 열 수 있습니다." +
                             "/market info <item>으로 해당 아이템의 가격을 알 수 있습니다.")
                 }
                 else {
