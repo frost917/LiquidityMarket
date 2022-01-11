@@ -3,23 +3,19 @@ package com.frost917.mcserver.market.market.inventory
 import com.frost917.mcserver.market.ItemData
 import com.frost917.mcserver.market.Main
 import com.frost917.mcserver.market.market.MarketType
+import com.frost917.mcserver.market.market.event.MarketTrade
 import com.frost917.mcserver.market.market.itemManager.SaleData
-import com.frost917.mcserver.market.storage.StorageManagerFactory
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
-import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
-import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.Inventory
-import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
-import java.util.HashMap
 
 // open market
 class MarketInventory(player: Player) {
-    private val storage = StorageManagerFactory.getStorage(Main.MainPlugin.getStorageType())
+    private val plugin = Main.MainPlugin.getPlugin()
+    private val storage = Main.MainPlugin.getStorage()
 
     private var itemList: List<ItemData> ?= null
     private val marketList = mutableListOf<SaleData>()
@@ -29,6 +25,7 @@ class MarketInventory(player: Player) {
     private lateinit var marketType: MarketType
 
     init {
+        Bukkit.getPluginManager().registerEvents(MarketTrade(), plugin)
         relocateItemSlot()
     }
 

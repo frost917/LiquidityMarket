@@ -1,15 +1,8 @@
 package com.frost917.mcserver.market.market.command
 
 import com.frost917.mcserver.market.Main
-import com.frost917.mcserver.market.market.MarketType
-import com.frost917.mcserver.market.market.event.MarketTrade
-import com.frost917.mcserver.market.market.inventory.MarketInventory
-import com.frost917.mcserver.market.market.MarketListManager
-import com.frost917.mcserver.market.market.inventory.MarketPageStore
+import com.frost917.mcserver.market.market.inventory.MarketStore
 import com.frost917.mcserver.market.market.itemManager.ItemValueManager
-import com.frost917.mcserver.market.storage.StorageManagerFactory
-import com.frost917.mcserver.market.storage.StorageType
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -19,10 +12,8 @@ import org.bukkit.entity.Player
 /*
  * market 커맨드 관련 처리
  */
-class MarketController(
-    private val storageType: StorageType
-): TabExecutor {
-    val storage = StorageManagerFactory.getStorage(storageType)
+class MarketController: TabExecutor {
+    val storage = Main.MainPlugin.getStorage()
 
     /**
      * Requests a list of possible completions for a command argument.
@@ -65,12 +56,7 @@ class MarketController(
                 if (!(sender.hasPermission("market.*") || sender.hasPermission("market.open"))) {
                     return false
                 }
-
-                MarketPageStore.openNewMarket(sender)
-
-                // 아이템 클릭 이벤트 처리용 이벤트 레지스터
-                val plugin = Main.MainPlugin.getPlugin()
-                Bukkit.getPluginManager().registerEvents(MarketTrade(storage), plugin)
+                MarketStore.openNewMarket(sender)
                 return true
             }
             // info의 경우 도움말 혹은 특정 아이템의 시세 불러옴

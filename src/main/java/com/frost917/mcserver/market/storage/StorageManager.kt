@@ -1,16 +1,18 @@
 package com.frost917.mcserver.market.storage
 
 import com.frost917.mcserver.market.ItemData
+import com.frost917.mcserver.market.TradeData
 import org.bukkit.Material
 
 interface StorageManager {
     // Create
-    abstract fun addItemData(itemData: ItemData): Boolean
+    fun addItemData(itemData: ItemData): Boolean
     // Read
-    abstract fun getMarketData(): List<ItemData>
-    abstract fun getMarketData(material: Material): ItemData
+    fun getMarketData(): List<ItemData>
+    fun getMarketData(material: Material): ItemData
     // Update
-    abstract fun syncItemData(itemData: ItemData): Boolean
+    fun tradeItem(tradeData: TradeData): String
+    fun revalueItem(itemData: ItemData): Boolean
     // Delete
-    abstract fun deleteItemData(material: Material): Boolean
+    fun deleteItemData(material: Material): Boolean
 }

@@ -8,4 +8,13 @@ data class ItemData(val material: Material, val marketValue: Long, val totalQuan
     fun toSaleData() : SaleData {
         return ItemValueManager.calcItemValue(this)
     }
+
+    fun getTradeQuantity(): Int {
+        val storage = Main.MainPlugin.getStorage()
+        val itemData = storage.getMarketData(material)
+
+        // 플레이어가 아이템 구매시 -
+        // 아이템 판매시 +
+        return totalQuantity - itemData.totalQuantity
+    }
 }

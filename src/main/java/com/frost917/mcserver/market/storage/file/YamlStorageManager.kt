@@ -1,6 +1,7 @@
 package com.frost917.mcserver.market.storage.file
 
 import com.frost917.mcserver.market.ItemData
+import com.frost917.mcserver.market.TradeData
 import com.frost917.mcserver.market.storage.StorageManager
 import org.bukkit.Material
 
@@ -17,9 +18,14 @@ class YamlStorageManager: FileStorageManager, StorageManager {
         TODO("Not yet implemented")
     }
 
-    override fun syncItemData(itemData: ItemData): Boolean {
+    override fun tradeItem(tradeData: TradeData): String {
         TODO("Not yet implemented")
     }
+
+    override fun revalueItem(itemData: ItemData): Boolean {
+        TODO("Not yet implemented")
+    }
+
 
     override fun deleteItemData(material: Material): Boolean {
         TODO("Not yet implemented")

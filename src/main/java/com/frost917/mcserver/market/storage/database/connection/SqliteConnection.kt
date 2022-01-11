@@ -2,6 +2,7 @@ package com.frost917.mcserver.market.storage.database.connection
 
 import com.frost917.mcserver.market.Main
 import org.jetbrains.exposed.sql.Database
+import java.nio.file.Paths
 import kotlin.io.path.Path
 import kotlin.io.path.createFile
 
@@ -14,9 +15,10 @@ class SqliteConnection() : DatabaseConnection {
 
     override fun createConnection(): Boolean {
         val plugin = Main.MainPlugin.getPlugin()
-        val dbPath = plugin.config.getString("db_path")
+        val configPath = Paths.get("").toAbsolutePath().toString() + "/LiquidityMarket/"
+        val dbPath = configPath + plugin.config.getString("db_path")
 
-        val path = Path(dbPath!!)
+        val path = Path(dbPath)
         if (!path.toFile().exists()) {
             path.createFile()
         }

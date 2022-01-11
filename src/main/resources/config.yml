@@ -1,0 +1,15 @@
+# market storage
+# default: sqlite
+# not developed: h2, mysql, mariadb, postgres, json, yaml
+db_type: sqlite
+db_path: database.sqlite
+
+#
+db_host: localhost
+# default port: 0
+# mysql, mariadb: 3306. postgres: 5432
+db_port: 3306
+
+db_name: liquidity
+db_id: liquidity
+db_password: pa?ssword
