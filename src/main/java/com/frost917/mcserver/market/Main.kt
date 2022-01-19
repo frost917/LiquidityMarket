@@ -4,6 +4,7 @@ import com.frost917.mcserver.market.market.admin.MarketCommand
 import com.frost917.mcserver.market.market.admin.MarketTabComplete
 import com.frost917.mcserver.market.market.command.MarketController
 import com.frost917.mcserver.market.market.event.MarketItemDelivery
+import com.frost917.mcserver.market.market.event.MarketTrade
 import com.frost917.mcserver.market.storage.StorageManager
 import com.frost917.mcserver.market.storage.StorageManagerFactory
 import com.frost917.mcserver.market.storage.StorageType
@@ -17,7 +18,8 @@ class Main : JavaPlugin() {
         getCommand("market")?.setExecutor(MarketController())
         getCommand("marketadmin")?.setExecutor(MarketCommand())
         getCommand("marketadmin")?.tabCompleter = MarketTabComplete()
-        server.pluginManager.registerEvents(MarketItemDelivery(), this)
+        server.pluginManager.registerEvents(MarketItemDelivery(), this )
+        server.pluginManager.registerEvents(MarketTrade(), this)
     }
 
     override fun onDisable() {

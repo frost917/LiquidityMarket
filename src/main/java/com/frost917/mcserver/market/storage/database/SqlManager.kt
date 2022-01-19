@@ -2,6 +2,7 @@ package com.frost917.mcserver.market.storage.database
 
 import org.jetbrains.exposed.sql.*
 import com.frost917.mcserver.market.ItemData
+import com.frost917.mcserver.market.Main
 import com.frost917.mcserver.market.TradeData
 import com.frost917.mcserver.market.storage.StorageManager
 import org.apache.commons.lang.RandomStringUtils
@@ -10,19 +11,37 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
 class SqlManager(private val database: Database) : StorageManager {
+    private val plugin = Main.MainPlugin.getPlugin()
+
+    init {
+        plugin.logger.info("LiquidityMarket: Market Initialize start!")
+        initDatabase()
+        plugin.logger.info("LiquidityMarket: Market Initialize complete!")
+    }
+
     // 아이템 창고
-    object ItemDataQuery: Table() {
+    object ItemDataQuery: Table("lqmarket_item_storage") {
         val material: Column<String> = varchar("material", 30).primaryKey()
         val marketValue: Column<Long> = long("market_value")
         val totalQuantity: Column<Int> = integer("total_quantity")
     }
 
     // 거래 내역
-    object TransactionTable: Table() {
-        val transaction_id: Column<String> = varchar("transaction_id", 8)
+    object TransactionTable: Table("lqmarket_trade_history") {
+        val transaction_id: Column<String> = varchar("transaction_id", 8).primaryKey()
         val playerID: Column<UUID> = uuid("player_id")
         val material = reference("material", ItemDataQuery.material)
         val tradeQuantity: Column<Int> = integer("trade_quantity")
+    }
+
+    private fun initDatabase() {
+        plugin.logger.info("LiquidityMarket: Initialize market tables")
+        transaction(database) {
+            SchemaUtils.create(ItemDataQuery)
+            plugin.logger.info("LiquidityMarket: Create item storage table")
+            SchemaUtils.create(TransactionTable)
+            plugin.logger.info("LiquidityMarket: Create trade history table")
+        }
     }
 
     override fun addItemData(itemData: ItemData): Boolean {
@@ -41,7 +60,9 @@ class SqlManager(private val database: Database) : StorageManager {
 
         transaction(database) {
             ItemDataQuery.selectAll().forEach {
-                val material = Material.getMaterial(it[ItemDataQuery.material])!!
+                val material = Material.getMaterial(it[ItemDataQuery.material]) ?: throw Exception(
+                    "Material data is broken!\n" + "Material: ${it[ItemDataQuery.material]}"
+                )
                 val marketValue = it[ItemDataQuery.marketValue]
                 val totalQuantity = it[ItemDataQuery.totalQuantity]
 
@@ -93,7 +114,11 @@ class SqlManager(private val database: Database) : StorageManager {
             // 거래 내역 작성
             TransactionTable.insert {
                 it[transaction_id] = transactionID
-                it[playerID] = tradeData.player.playerProfile.id!!
+                it[playerID] = tradeData.player.playerProfile.id ?: throw Exception(
+                    "LiquidityMarket: Trade history making failed!" +
+                            "player id is null" +
+                            "player name: ${tradeData.player.displayName()}"
+                )
                 it[material] = tradeData.material.toString()
                 it[tradeQuantity] = tradeData.tradeQuantity
             }

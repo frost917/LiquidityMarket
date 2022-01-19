@@ -14,52 +14,25 @@ import org.bukkit.inventory.ItemStack
 
 // open market
 class MarketInventory(player: Player) {
+    // TODO) 마켓 리스트는 MarketListManager에서 loadMarketList(marketPage) 메소드로 불러올 것
     private val plugin = Main.MainPlugin.getPlugin()
-    private val storage = Main.MainPlugin.getStorage()
-
-    private var itemList: List<ItemData> ?= null
-    private val marketList = mutableListOf<SaleData>()
+    private lateinit var marketList: List<SaleData>
 
     private val inventory = Bukkit.createInventory(player, 54, Component.text("자유시장"))
     private var marketPage = 1
     private lateinit var marketType: MarketType
 
     init {
-        Bukkit.getPluginManager().registerEvents(MarketTrade(), plugin)
         relocateItemSlot()
     }
 
     // refresh ItemList
     private fun refreshMarketData() {
         // get market data
-        itemList = storage.getMarketData()
-    }
-
-    // refresh MarketList
-    private fun refreshMarketList() {
-        // 리스트 초기화
-        marketList.clear()
-
-        if(itemList == null) {
-            refreshMarketData()
-        }
-
-        for (index in 0..45) {
-            // for 문에 사용되는 상대적 index를 실제 index로 변경
-            var relIndex: Int = (index * marketPage)
-
-            // 인덱스 값이 리스트 범위를 초과하는 경우 컷
-            if(relIndex >= itemList!!.count()) {
-                break
-            }
-
-            marketList.add(itemList?.get(relIndex)!!.toSaleData())
-        }
-
+        marketList = MarketStore.loadMarketData(marketPage)
     }
 
     private fun relocateItemSlot() {
-        refreshMarketList()
 
         if (marketList.count() >= 46) {
             throw Exception("Market list shouldn't over than 36 items!")

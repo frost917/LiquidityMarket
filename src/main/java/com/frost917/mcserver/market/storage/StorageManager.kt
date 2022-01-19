@@ -5,6 +5,7 @@ import com.frost917.mcserver.market.TradeData
 import org.bukkit.Material
 
 interface StorageManager {
+    // TODO!! material 말고 item meta도 serialize를 하든 string화 하든 해서 저장할 것
     // Create
     fun addItemData(itemData: ItemData): Boolean
     // Read

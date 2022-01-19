@@ -1,10 +1,18 @@
 package com.frost917.mcserver.market.market
 
 import com.frost917.mcserver.market.ItemData
+import com.frost917.mcserver.market.Main
 import com.frost917.mcserver.market.market.itemManager.ItemValueManager
 import com.frost917.mcserver.market.market.itemManager.SaleData
 
 object MarketListManager {
+    private val stroage = Main.MainPlugin.getStorage()
+    // TODO) 모든 마켓 인벤토리는 이 오브젝트에서 데이터 불러올 것
+    // TODO) 거래 이벤트 발생시 마켓 리스트 갱신
+    // 마켓 페이지 : 판매중인 아이템
+    // 각 페이지 별로 48개씩 아이템 보관
+    private val marketList = mutableMapOf<Int, List<SaleData>>()
+
     // 아이템 리스트를 36개씩 쪼갬
     fun splitMarketList(itemList: List<ItemData>, pageNumber: Int): List<ItemData> {
         var newItemList = mutableListOf<ItemData>()
@@ -24,14 +32,8 @@ object MarketListManager {
         return newItemList
     }
 
-    // List<ItemData>를 List<SaleData>로 변환
-    fun convertItemToSale(itemList: List<ItemData>): List<SaleData> {
-        var saleList = mutableListOf<SaleData>()
-        itemList.forEach {
-            saleList.add(ItemValueManager.calcItemValue(it))
-        }
+    fun refreshMarketList() {
 
-        return saleList
     }
 
     /*
